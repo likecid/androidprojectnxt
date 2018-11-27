@@ -1,3 +1,4 @@
+import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.CompassHTSensor;
 
@@ -20,11 +21,19 @@ public class CompassControl {
 
     public void calibrateDegree(){
         compass.resetCartesianZero();
+        
     }
+    
 
-    public void calibrate(){
+    public void calibrate() throws InterruptedException{
         compass.startCalibration();
-        // TODO: Der NXT muss sich langsam drehen, vorgeschlagen sind 1-1,5 Umdrehungen in mind. 20 Sekunden
+		Motor.B.setSpeed(20);
+		Motor.C.setSpeed(20);
+        Motor.B.forward();
+        Motor.C.backward();
+        Thread.sleep(20000);
+        Motor.B.stop();
+        Motor.C.stop();
         compass.stopCalibration();
     }
 
