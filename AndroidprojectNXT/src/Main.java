@@ -24,10 +24,10 @@ public class Main {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException, InterruptedException {
 
-//		CompassControl compass = new CompassControl();
+		CompassControl compass = new CompassControl();
 //		compass.calibrateDegree();
-		CompassHTSensor compass = new CompassHTSensor(SensorPort.S1);
-		
+		CompassHTSensor compasss = new CompassHTSensor(SensorPort.S1);
+
 //		Pose positiona = new Pose(0,0,0);
 //		Pose positionb = new Pose(100,0,90);
 //		Pose positionc = new Pose(100,50,180);
@@ -35,44 +35,110 @@ public class Main {
 //
 //		PoseProvider pospro;
 //		pospro.setPose(positionb);
-		
+
 //		Point pointone = new Point(100,0);
 //		Point pointtwo = new Point(100,50);
 //		Point pointthree = new Point(0,50);
 //		Point pointfour = new Point(0,0);
 
-		
-		
 		@SuppressWarnings("deprecation")
-		CompassPilot pilot = new CompassPilot(compass, (float)5.6, 14,Motor.B, Motor.C);
-		DifferentialPilot pilotzwei = new DifferentialPilot((float)5.6,(float)14,Motor.B,Motor.C);
-		
-		Navigator nav = new Navigator(pilotzwei);
+		CompassPilot pilot = new CompassPilot(compasss, (float) 5.6, 14, Motor.B, Motor.C);
+		DifferentialPilot pilotzwei = new DifferentialPilot(3.25, 19.8, Motor.B, Motor.C);
+
+	Navigator nav = new Navigator(pilotzwei);
 //		nav.addWaypoint(0,0,0);
 //		nav.addWaypoint(0,50,270);
 //		nav.addWaypoint(100,50,180);
 //		nav.addWaypoint(100,0,90);
 //		nav.addWaypoint(0,0,0);
 
-		
 		bluetoothConnection = Bluetooth.waitForConnection();
+		
 		LCD.drawString("Verbunden", 1, 1);
 		bluetoothConnection.setIOMode(NXTConnection.RAW);
 		dataOutputStream = bluetoothConnection.openDataOutputStream();
 		dataInputStream = bluetoothConnection.openDataInputStream();
 
-		
 //		float rotate = compass.getDegrees2();
 
-		while (true) {
-			// Qualifikationsfahrt
+		
+		
+		
+		
+		PathFollower pFollow = new PathFollower();
+		
+		// Set the waypoints to define a square
+		pFollow.newWaypoint(100, 0);
+		pFollow.newWaypoint(100, 50);
+		pFollow.newWaypoint(0, 50);
+		pFollow.newWaypoint(0, 0,0);
+		
+		// Now follow the path defined by the waypoints
+		pFollow.navigate();	
+		
+		
+		
+		
 
-			LCD.clear();
-			LCD.drawInt((int) compass.getDegrees(), 1, 1);
-//			Thread.sleep(1000);
-//			compass.calibrate();
-			
-//			if (receive() == 99) {
+		
+		
+		
+		
+//		Motor.B.setSpeed(360);
+//		Motor.C.setSpeed(360);
+//		pilot.calibrate();
+//		vorwaerts();
+//		Thread.sleep(5555);
+//		stop();
+//		pilot.rotate(90);
+//		vorwaerts();
+//		Thread.sleep(2777);
+//		stop();
+//		pilot.rotate(90);
+//		vorwaerts();
+//		Thread.sleep(5555);
+//		stop();
+//		pilot.rotate(90);
+//		vorwaerts();
+//		Thread.sleep(2777);
+//		stop();
+//		pilot.rotate(90);
+//		
+	disconnect();
+		
+		
+		
+		
+		
+		
+		
+//		while (true) {
+//			// Qualifikationsfahrt
+//			
+//
+//			LCD.clear();
+//			LCD.drawInt((int) compass.getDegrees(), 1, 1);
+////			Thread.sleep(1000);
+////			compass.calibrate();
+//			if (receive() == 30) {
+//				send((int) compass.getDegrees());
+//
+//				LCD.drawString("compasswert", 1, 1);
+//			}
+//
+//			if (receive() == 1) {
+//				
+//				vorwaerts();
+//
+//			}
+//			if (receive() == 2) {
+//
+//			}
+//			if (receive() == 3) {
+//
+//			}
+
+		//	if (receive() == 99) {
 //				compass.calibrateDegree();
 //				LCD.clear();
 //				LCD.drawString("Quali", 1, 1);
@@ -181,16 +247,16 @@ public class Main {
 //				Motor.C.setSpeed(100);
 //				Motor.C.forward();
 //				Motor.B.backward();
-			nav.goTo(0, 0, 0);
-			nav.stop();
-			nav.goTo(100, 0, 90);
-			nav.stop();
-			nav.goTo(100, 50, 180);
-			nav.stop();
-			nav.goTo(0, 50, 270);
-			nav.stop();
-			nav.goTo(0, 0, 0);
-			nav.stop();
+//				nav.goTo(0, 0, 0);
+//				nav.stop();
+//				nav.goTo(100, 0, 90);
+//				nav.stop();
+//				nav.goTo(100, 50, 180);
+//				nav.stop();
+//				nav.goTo(0, 50, 270);
+//				nav.stop();
+//				nav.goTo(0, 0, 0);
+//				nav.stop();
 //		    	nav.followPath();
 //				
 //				
@@ -208,63 +274,66 @@ public class Main {
 //				
 //				LCD.drawString("Quali Bestanden", 1, 1);
 ////			send(98);
-		//	}
-			// Disconnect
-			
-			
-			
-			
-//			vorwaerts();
-//			Thread.sleep(5555);
-//			stop();
-//			neunzig(compass);
-//			
-//			vorwaerts();
-//			Thread.sleep(2777);
-//			stop();
-//			neunzig(compass);
-//			
-//			vorwaerts();
-//			Thread.sleep(5555);
-//			stop();
-//			neunzig(compass);
-//			
-//			vorwaerts();
-//			Thread.sleep(2777);
-//			stop();
-//			neunzig(compass);
-			
-			Motor.B.setSpeed(360);
-			Motor.C.setSpeed(360);
-//			pilot.calibrate();
-			vorwaerts();
-			Thread.sleep(5555);
-			stop();
-			pilot.rotate(90);
-			vorwaerts();
-			Thread.sleep(2777);
-			stop();
-			pilot.rotate(90);
-			vorwaerts();
-			Thread.sleep(5555);
-			stop();
-			pilot.rotate(90);
-			vorwaerts();
-			Thread.sleep(2777);
-			stop();
-			pilot.rotate(90);
-			
-			
-			
-			
-			
-			if (/* receive() == 50 */true) {
-				break;
 			}
+			// Disconnect
 
-		}
+//			vorwaerts();
+//			Thread.sleep(5555);
+//			stop();
+//			neunzig(compass);
+//			
+//			vorwaerts();
+//			Thread.sleep(2777);
+//			stop();
+//			neunzig(compass);
+//			
+//			vorwaerts();
+//			Thread.sleep(5555);
+//			stop();
+//			neunzig(compass);
+//			
+//			vorwaerts();
+//			Thread.sleep(2777);
+//			stop();
+//			neunzig(compass);
+
+//			Motor.B.setSpeed(360);
+//			Motor.C.setSpeed(360);
+////			pilot.calibrate();
+//			vorwaerts();
+//			Thread.sleep(5555);
+//			stop();
+//			pilot.rotate(90);
+//			vorwaerts();
+//			Thread.sleep(2777);
+//			stop();
+//			pilot.rotate(90);
+//			vorwaerts();
+//			Thread.sleep(5555);
+//			stop();
+//			pilot.rotate(90);
+//			vorwaerts();
+//			Thread.sleep(2777);
+//			stop();
+//			pilot.rotate(90);
+
+//			if (/* receive() == 50 */true) {
+//				break;
+//			}
+
+//		}
 
 		// disconnect();
+	//}
+	
+	
+	public static void qualitmithart(CompassControl compass) throws InterruptedException {
+		
+		vorwaerts();
+		Thread.sleep(5555);
+		neunzig(compass);
+		
+		
 	}
 
 	public static int receive() throws IOException {
@@ -285,49 +354,50 @@ public class Main {
 		Motor.B.stop(true);
 		Motor.C.stop(true);
 	}
-	
+
 	public static void vorwaerts() {
 		Motor.B.setSpeed(360);
 		Motor.C.setSpeed(360);
 		Motor.B.forward();
 		Motor.C.forward();
+
+	}
+	
+	public static void rechtsdrehen() {
+		
+		Motor.B.setSpeed(360);
+		Motor.C.setSpeed(360);
+		
+		Motor.B.forward();
+		Motor.C.backward();
 		
 	}
 
 	public static void neunzig(CompassControl Compass) {
-		
-		
-		/*
-		Motor.B.setSpeed(30);
-		Motor.C.setSpeed(30);
-		
-		CompassControl compass =Compass;
-		compass.calibrateDegree();
-		float startwert  = compass.getDegrees() ;
 
-		while(((compass.getDegrees()+90) %360) < ((startwert+180) % 360) ) {
-			LCD.drawString(Float.toString(compass.getDegrees()), 1, 1);
-			Motor.C.forward();
-			Motor.B.backward();	
-			
-			
-			
-		}
-		stop();
 		
+		 Motor.B.setSpeed(30); Motor.C.setSpeed(30);
+		  
+		  CompassControl compass =Compass; compass.calibrateDegree(); float startwert =
+		  compass.getDegrees() ;
+		  
+		  while(((compass.getDegrees()+90) %360) < ((startwert+180) % 360) ) {
+		  LCD.drawString(Float.toString(compass.getDegrees()), 1, 1);
+		  Motor.C.forward(); Motor.B.backward();
+		  
+		  
+		  
+		  } stop();
+		  
+		  
+		  
+		 
+
 		
-		
-		*/
-		
-	Motor.B.rotateTo(90);
-	stop();
-	
-		
-	
 	}
-	
-	
-	
-	
-	
+
+	public static void testmethode() {
+
+	}
+
 }
